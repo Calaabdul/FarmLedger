@@ -45,51 +45,62 @@ if (searchInput && tableBody) {
                 searchStatus.textContent = error.message;
             });
     }
+function displayRecords(records) {
 
-    // Display records in the table
-    function displayRecords(records) {
+    tableBody.replaceChildren();
 
-        tableBody.replaceChildren();
+    if (records.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
 
-        if (records.length === 0) {
-            const row = document.createElement("tr");
-            const cell = document.createElement("td");
+        cell.colSpan = 6;
+        cell.textContent = "No produce records found.";
+        cell.className = "text-center text-muted";
 
-            cell.colSpan = 6;
-            cell.textContent = "No produce records found.";
-            cell.className = "text-center text-muted";
-
-            row.appendChild(cell);
-            tableBody.appendChild(row);
-            return;
-        }
-
-        records.forEach(record => {
-
-            const row = document.createElement("tr");
-
-            const values = [
-                record.name,
-                record.category_name || "—",
-                record.quantity,
-                record.unit,
-                record.price_per_unit || "—"
-            ];
-
-            values.forEach(value => {
-                const cell = document.createElement("td");
-                cell.textContent = value;
-                row.appendChild(cell);
-            });
-
-            const actionCell = document.createElement("td");
-            actionCell.textContent = "Use the Edit/Delete links above for changes.";
-            row.appendChild(actionCell);
-
-            tableBody.appendChild(row);
-        });
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+        return;
     }
 
+    records.forEach(record => {
+
+        const row = document.createElement("tr");
+
+        const values = [
+            record.name,
+            record.category_name || "—",
+            record.quantity,
+            record.unit,
+            record.price_per_unit || "—"
+        ];
+
+        values.forEach(value => {
+            const cell = document.createElement("td");
+            cell.textContent = value;
+            row.appendChild(cell);
+        });
+
+        // Action column
+        const actionCell = document.createElement("td");
+
+        const editLink = document.createElement("a");
+        editLink.href = `/api/manage/${record.id}/edit/`;
+        editLink.textContent = "Edit";
+        editLink.className = "btn btn-sm btn-outline-success me-2";
+
+        const deleteLink = document.createElement("a");
+        deleteLink.href = `/api/manage/${record.id}/delete/`;
+        deleteLink.textContent = "Delete";
+        deleteLink.className = "btn btn-sm btn-outline-danger";
+
+        actionCell.appendChild(editLink);
+        actionCell.appendChild(deleteLink);
+
+        row.appendChild(actionCell);
+
+        tableBody.appendChild(row);
+    });
+}
     // Search records through the API
     searchInput.addEventListener("input", function () {
 
