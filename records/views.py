@@ -17,9 +17,6 @@ from .serializers import CategorySerializer, ProduceSerializer
 
 # Create your views here.
 
-
-
-
 class ProduceListCreateView(generics.ListCreateAPIView):
     serializer_class = ProduceSerializer
     permission_classes = [permissions.IsAuthenticated]

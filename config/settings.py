@@ -27,9 +27,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-e+il4g5%&p**a9a1cgmqi!7x@-*oqwg3%ext&1!^x6kw^)-=h&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv(
+    "ALLOWED_HOSTS",
+    "localhost,127.0.0.1"
+).split(",")
 
 
 # Application definition
@@ -44,9 +47,12 @@ INSTALLED_APPS = [
 
      # Third-party apps
     'rest_framework',
+    'drf_spectacular',
+     'django_filters',
+
     'crispy_forms',
     'crispy_bootstrap5',
-    'django_filters',
+   
 
     # Our applications
     'accounts',
@@ -55,6 +61,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -132,9 +139,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
 
-STATICFILES_DIRS = [BASE_DIR / 'static',]
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
 
@@ -147,11 +158,12 @@ MAILERS = {
     },
 }
 
+DEFAULT_FROM_EMAIL = 'FarmLedger <noreply@farmledger.com>'
 
 # Configure SECRET_KEY and DEBUG
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-DEBUG = os.getenv("DEBUG") == "True"
+
 
 # Configure Crispy Forms ------> This tells Crispy Forms to render our forms using Bootstrap 5.
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -167,6 +179,9 @@ LOGOUT_REDIRECT_URL = 'login'
 
 
 REST_FRAMEWORK = {
+
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.SearchFilter',
@@ -176,3 +191,16 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
 }
+
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'FarmLedger API',
+    'DESCRIPTION': 'API for managing farm produce records.',
+    'VERSION': '1.0.0',
+}
+
+
+# Development email configuration
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+DEFAULT_FROM_EMAIL = 'FarmLedger <noreply@farmledger.com>'

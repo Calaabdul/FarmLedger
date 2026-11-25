@@ -14,7 +14,7 @@ if (searchInput && tableBody) {
     let currentPage = 1;
     let totalRecords = 0;
 
-    // Retrieve a page of records from the API
+    // Retrieve records from the API
     function loadRecords(url = "/api/produce/") {
 
         fetch(url)
@@ -90,7 +90,18 @@ if (searchInput && tableBody) {
         });
     }
 
-    // Move to the next page
+    // Search records through the API
+    searchInput.addEventListener("input", function () {
+
+        const searchTerm = searchInput.value;
+
+        const url = `/api/produce/?search=${encodeURIComponent(searchTerm)}`;
+
+        currentPage = 1;
+        loadRecords(url);
+    });
+
+    // Next page
     nextButton.addEventListener("click", function () {
         if (nextUrl) {
             currentPage++;
@@ -98,7 +109,7 @@ if (searchInput && tableBody) {
         }
     });
 
-    // Move to the previous page
+    // Previous page
     previousButton.addEventListener("click", function () {
         if (previousUrl) {
             currentPage--;
@@ -106,6 +117,6 @@ if (searchInput && tableBody) {
         }
     });
 
-    // Load the first page
+    // Load initial records
     loadRecords();
 }
