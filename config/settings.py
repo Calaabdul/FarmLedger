@@ -147,6 +147,12 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 
 
 # Email
@@ -204,3 +210,13 @@ SPECTACULAR_SETTINGS = {
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 DEFAULT_FROM_EMAIL = 'FarmLedger <noreply@farmledger.com>'
+
+
+
+# Production security
+CSRF_TRUSTED_ORIGINS = [
+    "https://farmledger.onrender.com",
+]
+
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
