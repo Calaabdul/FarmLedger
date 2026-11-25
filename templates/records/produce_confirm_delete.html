@@ -1,0 +1,47 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Delete Produce | FarmLedger{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center py-5">
+
+    <div class="col-md-6">
+
+        <div class="card p-4 text-center">
+
+            <i class="bi bi-exclamation-triangle text-danger fs-1"></i>
+
+            <h3 class="fw-bold mt-3">Delete Produce?</h3>
+
+            <p class="text-muted">
+                Are you sure you want to delete
+                <strong>{{ object.name }}</strong>?
+            </p>
+
+            <p class="text-danger small">
+                This action cannot be undone.
+            </p>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <button type="submit" class="btn btn-danger">
+                    Yes, Delete
+                </button>
+
+                <a href="{% url 'produce-list' %}"
+                   class="btn btn-outline-secondary">
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

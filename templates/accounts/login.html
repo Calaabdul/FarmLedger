@@ -1,0 +1,46 @@
+
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Login | FarmLedger{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center align-items-center py-5">
+
+    <div class="col-md-7 col-lg-5">
+
+        <div class="card p-4 p-md-5">
+
+            <div class="text-center mb-4">
+                <i class="bi bi-flower1 text-success fs-1"></i>
+                <h2 class="fw-bold mt-2">Welcome Back</h2>
+                <p class="text-muted">
+                    Login to manage your farm records.
+                </p>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                {{ form|crispy }}
+
+                <button type="submit" class="btn btn-farm w-100 mt-3">
+                    Login
+                </button>
+            </form>
+
+            <p class="text-center mt-4 mb-0">
+                Don't have an account?
+                <a href="{% url 'signup' %}" class="text-success fw-bold">
+                    Create Account
+                </a>
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

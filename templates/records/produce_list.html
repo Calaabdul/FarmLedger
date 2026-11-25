@@ -1,0 +1,92 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>Produce Records</h2>
+            <p class="text-muted">Manage your farm produce inventory.</p>
+        </div>
+
+        <a href="{% url 'produce-create' %}" class="btn btn-success">
+            Add Produce
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+
+            <input
+                type="text"
+                id="produce-search"
+                class="form-control mb-3"
+                placeholder="Search produce by name..."
+            >
+
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            <th>Unit</th>
+                            <th>Price per unit</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="produce-table-body">
+                        {% for item in produces %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.category|default:"—" }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.get_unit_display }}</td>
+                            <td>{{ item.price_per_unit|default:"—" }}</td>
+                            <td>
+                                <a href="{% url 'produce-update' item.pk %}"
+                                   class="btn btn-sm btn-outline-success">
+                                    Edit
+                                </a>
+
+                                <a href="{% url 'produce-delete' item.pk %}"
+                                   class="btn btn-sm btn-outline-danger">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">
+                                No produce records found.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <p id="search-status" class="text-muted small"></p>
+
+            <div class="d-flex justify-content-between align-items-center mt-3">
+
+                <button id="previous-page" class="btn btn-outline-success" disabled>
+                    Previous
+                </button>
+
+                <span id="page-info" class="text-muted small"></span>
+
+                <button id="next-page" class="btn btn-outline-success" disabled>
+                    Next
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

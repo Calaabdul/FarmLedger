@@ -1,0 +1,159 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | FarmLedger{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-wrapper">
+
+    <!-- Welcome Section -->
+    <div class="dashboard-hero mb-4">
+        <div class="hero-content">
+            <span class="hero-tag">FARM MANAGEMENT MADE SIMPLE</span>
+
+            <h1>Welcome back, {{ user.username }}!</h1>
+
+            <p>
+                Keep track of your farm produce and manage
+                your agricultural records in one place.
+            </p>
+
+            <a href="/api/produce/" class="btn btn-light text-success fw-bold">
+                View API Records
+            </a>
+        </div>
+    </div>
+
+
+    <!-- Statistics -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-12 col-sm-6 col-lg-4">
+            <div class="stat-card">
+                <div class="stat-icon green-icon">
+                    <i class="bi bi-box-seam"></i>
+                </div>
+
+                <p>Total Records</p>
+                <h2>{{ total_records }}</h2>
+                <small>Produce entries you manage</small>
+            </div>
+        </div>
+
+
+        <div class="col-12 col-sm-6 col-lg-4">
+            <div class="stat-card">
+                <div class="stat-icon orange-icon">
+                    <i class="bi bi-grid"></i>
+                </div>
+
+                <p>Categories</p>
+                <h2>{{ category_count }}</h2>
+                <small>Available produce categories</small>
+            </div>
+        </div>
+
+
+        <div class="col-12 col-sm-6 col-lg-4">
+            <div class="stat-card">
+                <div class="stat-icon blue-icon">
+                    <i class="bi bi-flower2"></i>
+                </div>
+
+                <p>Unique Produce</p>
+                <h2>{{ unique_produce }}</h2>
+                <small>Different produce types recorded</small>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Recent Records -->
+    <div class="card dashboard-table-card">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <div>
+                <h4 class="fw-bold mb-1">Recent Produce Records</h4>
+                <p class="text-muted mb-0 small">
+                    Your latest farm produce entries
+                </p>
+            </div>
+
+            <a href="/api/produce/" class="text-success fw-bold text-decoration-none">
+                View API <i class="bi bi-arrow-right"></i>
+            </a>
+
+        </div>
+
+
+        {% if recent_records %}
+
+            <div class="table-responsive">
+
+                <table class="table align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>Produce</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            <th>Date Recorded</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for item in recent_records %}
+
+                            <tr>
+                                <td class="fw-semibold">
+                                    {{ item.name }}
+                                </td>
+
+                                <td>
+                                    {% if item.category %}
+                                        <span class="category-badge">
+                                            {{ item.category.name }}
+                                        </span>
+                                    {% else %}
+                                        <span class="text-muted">Uncategorized</span>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {{ item.quantity }} {{ item.unit }}
+                                </td>
+
+                                <td>
+                                    {{ item.date_recorded|date:"M d, Y" }}
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <div class="text-center py-5">
+                <i class="bi bi-basket text-success fs-1"></i>
+                <h5 class="mt-3">No produce records yet</h5>
+                <p class="text-muted">
+                    Your produce records will appear here.
+                </p>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
