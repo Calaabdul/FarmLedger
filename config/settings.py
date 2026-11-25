@@ -31,7 +31,7 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = os.getenv(
     "ALLOWED_HOSTS",
-    "localhost,127.0.0.1"
+    "localhost,127.0.0.1, farmledger-hn3m.onrender.com"
 ).split(",")
 
 
@@ -215,7 +215,7 @@ DEFAULT_FROM_EMAIL = 'FarmLedger <noreply@farmledger.com>'
 
 # Production security
 CSRF_TRUSTED_ORIGINS = [
-    "https://farmledger.onrender.com",
+    "https://farmledger-hn3m.onrender.com",
 ]
 
 SESSION_COOKIE_SECURE = not DEBUG
